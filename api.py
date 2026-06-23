@@ -1,12 +1,13 @@
-from os import replace
-
+import os
+from dotenv import load_dotenv
 import requests
+
+load_dotenv()
 
 def get_all_token_prices(token_symbol):
     url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest"
     
-    with open("api_key.txt", "r") as file:
-        api_key = file.read().strip()
+    api_key = os.getenv("CMC_API_KEY")
 
     
     parameters = {

@@ -1,5 +1,8 @@
 import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def scan_all_wallet_tokens(wallet_address):
     """
@@ -7,7 +10,7 @@ def scan_all_wallet_tokens(wallet_address):
     inside a wallet across major networks, down to microscopic decimal sizes.
     """
     # Using Ankr's public multi-chain advanced indexed gateway
-    url = "https://rpc.ankr.com/multichain/a705755171672a3af93f91b8d7e6bcba3cf38ac8e76531a72307259e2bd935f3"
+    url = f"https://rpc.ankr.com/multichain/{os.getenv("Ankr_api_key")}"
     
     # Target major EVM chains to scan simultaneously
     target_chains = ["eth", "polygon", "bsc", "arbitrum", "base", "avalanche"]
@@ -60,4 +63,4 @@ def scan_all_wallet_tokens(wallet_address):
         return []
     
 if __name__=="__main__": 
-    print(scan_all_wallet_tokens("0xfA89F86fBC3e0D1f8E7E4a4C3Da05548d35D4446"))
+    scan_all_wallet_tokens()

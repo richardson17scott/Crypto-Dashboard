@@ -47,9 +47,10 @@ Install the required packages using pip:
 pip install -r requirements.txt
 ```
 3. Add Your API Credentials
-Create a plain-text file named exactly api_key.txt in the root folder directory and paste your private CoinMarketCap developer API Key inside:
+Create a plain-text file named exactly .env in the root folder directory and paste your private CoinMarketCap developer API Key inside:
 ```Plaintext
-your_coinmarketcap_api_key_here
+CMC_API_KEY="your_coinmarketcap_api_key_here"
+Ankr_api_key="your_ankr_api_key_here"
 ```
 ⚠️ Security Warning: Never check your api_key.txt file into git control. Ensure your local .gitignore includes api_key.txt to keep your credentials safe.
 
