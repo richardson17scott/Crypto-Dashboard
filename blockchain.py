@@ -9,9 +9,9 @@ def scan_all_wallet_tokens(wallet_address):
     Queries Ankr's multi-chain indexer to get EVERY token asset 
     inside a wallet across major networks, down to microscopic decimal sizes.
     """
+    api_key = os.getenv('Ankr_api_key')
     # Using Ankr's public multi-chain advanced indexed gateway
-    url = f"https://rpc.ankr.com/multichain/{os.getenv("Ankr_api_key")}"
-    
+    url = f"https://rpc.ankr.com/multichain/{api_key}"
     # Target major EVM chains to scan simultaneously
     target_chains = ["eth", "polygon", "bsc", "arbitrum", "base", "avalanche"]
     
