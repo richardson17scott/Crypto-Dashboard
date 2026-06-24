@@ -34,7 +34,7 @@ The app splits responsibility across three specialized modules:
 └── api_key.txt      # Private CoinMarketCap API Key credential (User Generated)
 ```
 
-## ⚙️ Installation & Setup
+## ⚙️ Installation & Setup (CLI)
 1. Clone the Repository
 Ensure you have Git installed, then initialize your folder environment:
 ```Bash
@@ -49,8 +49,8 @@ pip install -r requirements.txt
 3. Add Your API Credentials
 Create a plain-text file named exactly .env in the root folder directory and paste your private CoinMarketCap developer API Key inside:
 ```Plaintext
-CMC_API_KEY="your_coinmarketcap_api_key_here"
-Ankr_api_key="your_ankr_api_key_here"
+CMC_API_KEY=your_coinmarketcap_api_key_here
+Ankr_api_key=your_ankr_api_key_here
 ```
 ⚠️ Security Warning: Never check your api_key.txt file into git control. Ensure your local .gitignore includes api_key.txt to keep your credentials safe.
 
@@ -61,5 +61,90 @@ streamlit run app.py
 ```
 Once running, open your web browser to the default local address (usually http://localhost:8501), paste any public EVM wallet address (e.g., 0xfA89...), and click "Calculate Live Portfolio Net Worth".
 
-## 🔒 License
-This repository is open-source and available under the MIT License. Feel free to modify and build upon it!
+## 🚀 Quick Start with Docker
+
+You don't need to clone the source code or install Python to run this app. You can pull the pre-built image directly from the GitHub Container Registry (GHCR).
+
+### Prerequisites
+Create a `.env` file in your local directory and add your Ankr API key:
+```env
+ANKR_API_KEY=your_actual_ankr_api_key_here
+CMC_API_KEY=your_coinmarketcap_api_key_here
+```
+Option 1: Using docker run (CLI)
+Run the following command in your terminal to instantly pull and start the dashboard:
+
+```Bash
+docker run -d \
+  -p 8501:8501 \
+  --env-file .env \
+  --name crypto-app \
+  ghcr.io/richardson17scott/crypto-dashboard:latest
+  ```
+
+Option 2: Using Docker Compose
+If you prefer managing configurations via YAML, create a docker-compose.yml file:
+
+```YAML
+version: '3.8'
+
+services:
+  crypto-dashboard:
+    image: ghcr.io/richardson17scott/crypto-dashboard:latest
+    container_name: crypto-app
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    restart: unless-stopped
+```
+
+Launch the application with:
+
+```Bash
+docker compose up -d
+```
+Once running via either option, open your browser and navigate to: http://localhost:8501
+
+### 🛠️ Building and Running From Scratch
+If you want to modify the code or build the Docker image locally from the source files, follow these steps:
+
+1. Clone the Repository
+```Bash
+git clone [https://github.com/richardson17scott/Crypto-Dashboard.git](https://github.com/richardson17scott/Crypto-Dashboard.git)
+cd Crypto-Dashboard
+```
+
+2. Set Up Your Environment
+Create your .env file in the root folder:
+
+```Plaintext
+ANKR_API_KEY=your_actual_ankr_api_key_here
+CMC_API_KEY=your_coinmarketcap_api_key_here
+```
+
+3. Build the Docker Image
+Compile the application layers using the local Dockerfile:
+
+```Bash
+docker build -t crypto-dashboard-local .
+```
+
+4. Run the Local Image
+```Bash
+docker run -d \
+  -p 8501:8501 \
+  --env-file .env \
+  --name crypto-app-local \
+  crypto-dashboard-local
+```
+
+### 🔒 Security & Optimization Notes
+PYTHONUNBUFFERED=1: Configured inside the Docker layers to ensure live application and blockchain connection logs stream instantly to the console for debugging.
+
+Network Isolation: The application binds to 0.0.0.0 inside the container network to properly route external UI requests through Docker's virtual bridge to port 8501.
+
+Root Certificates: Built on top of ca-certificates system layers to securely authorize HTTPS/TLS handshake requests to Web3 RPC indexers.
+
+### 📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
